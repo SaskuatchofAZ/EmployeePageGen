@@ -110,10 +110,10 @@ const managerInfo = function() {
         {
             type: "input",
             message: "What is your Manager's office number?",
-            name: "github"
+            name: "office"
         }
     ]).then(response => {
-        let manager = new Manager(response.name, response.id, response.email, response.github);
+        let manager = new Manager(response.name, response.id, response.email, response.office);
         return manager;
     })
 }
