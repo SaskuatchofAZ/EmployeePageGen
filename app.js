@@ -9,8 +9,9 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+
+const team = [];
+
 const init = function() {
     inquirer.prompt([
         {
@@ -58,8 +59,26 @@ const engiInfo = function() {
         }
     ]).then(response => {
         let engi = new Engineer(response.name, response.id, response.email, response.github);
-        return engi;
-    })
+        team.push(engi);
+        inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Would you like to add another team member?",
+                name: "continue"
+            }
+        ]).then(response => {
+            if (response.continue) {
+                init();
+            }
+            else {
+                const finishedHTML = render(team);
+                fs.writeFile(outputPath, finishedHTML, err => {
+                    if (err) throw err;
+                })
+            }
+        });
+    });
+    
 }
 
 const internInfo = function() {
@@ -86,8 +105,26 @@ const internInfo = function() {
         }
     ]).then(response => {
         let intern = new Intern(response.name, response.id, response.email, response.school);
-        return intern;
-    })
+        team.push(intern);
+        inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Would you like to add another team member?",
+                name: "continue"
+            }
+        ]).then(response => {
+            if (response.continue) {
+                init();
+            }
+            else {
+                const finishedHTML = render(team);
+                fs.writeFile(outputPath, finishedHTML, err => {
+                    if (err) throw err;
+                })
+            }
+        });
+    });
+    
 }
 
 const managerInfo = function() {
@@ -114,7 +151,26 @@ const managerInfo = function() {
         }
     ]).then(response => {
         let manager = new Manager(response.name, response.id, response.email, response.office);
-        return manager;
-    })
-}
+        team.push(manager);
+        inquirer.prompt([
+            {
+                type: "confirm",
+                message: "Would you like to add another team member?",
+                name: "continue"
+            }
+        ]).then(response => {
+            if (response.continue) {
+                init();
+            }
+            else {
+                const finishedHTML = render(team);
+                fs.writeFile(outputPath, finishedHTML, err => {
+                    if (err) throw err;
+                })
+                return
+            }
+        });
+    });
+}  
+
 init();
